@@ -72,4 +72,4 @@ def twitter_lookup(userbatch):
 
 if __name__ == "__main__":
     stream = myStreamer(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-    stream.statuses.filter(track='twitter')
+    
