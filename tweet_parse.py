@@ -1,9 +1,24 @@
 import json
+import nltk
 import urllib2
+import subprocess
+import unirest
 import ast
 from pprint import pprint
 
-def json_parse(json_file):
+def assignPolarity(text):
+	response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/",headers={"X-Mashape-Authorization": "q9WreMnPjMW5iL3yNpbnM4jwRmVr6Sbu"},params={"text": text,"language": "english"})
+  	sentiment = response.body
+  	maxval = 0
+  	maxpol = ''
+  	for pol in sentiment["probability"]:
+  		value = sentiment["probability"][pol]
+  		if (value >= maxval):
+  			maxval = value
+  			maxpol = pol
+  	return [maxpol,maxval]
+
+def jsonParse(json_file):
 	parsed = {}
 	json_data = open(json_file)
 	data = json.load(json_data)
@@ -25,7 +40,6 @@ def json_parse(json_file):
 		else:
 			city = location.lower().replace(' ','_')
 		
-		print(city, state)
 		catch_json = urllib2.urlopen('http://api.geonames.org/searchJSON?q='+city+'&maxRows='+str(NUMCITIES)+'&username=cmiller0330')
 		open_json = ast.literal_eval(catch_json.read())
 		
@@ -48,9 +62,10 @@ def json_parse(json_file):
 	parsed["hashtags"] = data["entities"]["hashtags"]
 	parsed["screen_name"] = "@"+data["entities"]["user_mentions"][0]["screen_name"]
 	parsed["text"] = data["text"]
+	parsed["polarity"] = assignPolarity(parsed["text"])
 	
 	with open('parsed_tweet.json','wb') as fp:
 		json.dump(parsed,fp)
 	json_data.close()
 
-json_parse('raw_tweet.json')			
+jsonParse('raw_tweet.json')			
