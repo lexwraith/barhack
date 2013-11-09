@@ -1,7 +1,7 @@
 function initialize() {
   var mapOptions = {
-    center: new google.maps.LatLng(35, -95),
-    zoom: 4,
+    center: new google.maps.LatLng(41.316324, -72.922343),
+    zoom: 8,
     disableDefaultUI: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -13,7 +13,7 @@ function initialize() {
   var styles = [
     {
       stylers: [
-        { hue: "#00ffe6" },
+        { hue: "#FA6900" },
         { saturation: -20 }
       ]
     },{
