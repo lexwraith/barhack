@@ -34,27 +34,37 @@ function initialize() {
 
   // Create a script tag and set the USGS URL as the source.
   var script = document.createElement('script');
-  script.src = '../middle/earthquake.json';
+  script.src = 'js/earthquake.json';
   var s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(script, s);
 
   window.eqfeed_callback = function(results) {
     var heatmapData = [];
-    for (var i = 0; i < results.features.length; i++) {
-      var coords = results.features[i].geometry.coordinates;
+    for (var i = 0; i < tweets.length; i++) {
+      var coords = tweets[i].coordinates;
       var latLng = new google.maps.LatLng(coords[1], coords[0]);
-      var magnitude = results.features[i].properties.mag;
-      var weightedLoc = {
-        location: latLng,
-        weight: Math.pow(2, magnitude)
-      };
-      heatmapData.push(weightedLoc);
+      // var magnitude = results.features[i].properties.mag;
+      // var weightedLoc = {
+      //   location: latLng,
+      //   weight: Math.pow(2, magnitude)
+      // };
+      // heatmapData.push(weightedLoc);
     }
     fetchData = function () {
-      $.getJSON('earthquake.json', eqfeed_callback);
+      $.getJSON('js/earthquake.json', eqfeed_callback);
     };
 
     fetchData();
+
+    for (var i = 0; i < tweets.length; i++) {
+      var coords = tweets[i].coordinates;
+      var latLng = new google.maps.LatLng(coords[1], coords[0]);
+      var marker = new google.maps.Marker({
+        position: Latlng,
+        map: map,
+        title: 'Hello World!'
+      });
+    }
 
     setInterval(fetchData, 500);
 
