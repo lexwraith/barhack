@@ -13,7 +13,7 @@ function initialize() {
   var styles = [
     {
       stylers: [
-        { hue: "#00ffe6" },
+        { hue: "#FA6900" },
         { saturation: -20 }
       ]
     },{
@@ -95,14 +95,8 @@ function initialize() {
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: false,
+      dissipating: true,
       map: map
-    });
-    $( heatmap ).animate({
-      opacity: 0.25
-    }, 5000, function() {
-      // Animation complete.
-      console.log("Called");
     });
   }
 }
