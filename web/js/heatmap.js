@@ -70,22 +70,9 @@ function initialize() {
       var coords = co_arr[1];
 
       var num = pol[1];
-      console.log(num);
 
       var lat = coords[0];
       var long = coords[1];
-
-      console.log(lat, long);
-      
-
-      // for (coords in co_arr.coordinates){
-      //   var d = co_arr.coordinates;
-      //   console.log(d);
-        
-      //   // Stating our lat/longs 
-      //   var first = d[0];
-      //   var second = d[1];
-      //   var magnitude = d[2];
 
         // Setting them
         var latLng = new google.maps.LatLng(lat, long);
@@ -96,7 +83,6 @@ function initialize() {
           weight: Math.pow(2, num)
         };
         heatmapData.push(weightedLoc);
-      // }
     }
 
     heatmap.setMap(null);
