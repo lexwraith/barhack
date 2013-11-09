@@ -34,46 +34,55 @@ function initialize() {
 
   // Create a script tag and set the USGS URL as the source.
   var script = document.createElement('script');
-  script.src = 'js/earthquake.json';
+  script.src = 'js/tweets.json';
   var s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(script, s);
 
-  window.eqfeed_callback = function(results) {
-    var heatmapData = [];
-    for (var i = 0; i < tweets.length; i++) {
-      var coords = tweets[i].coordinates;
-      var latLng = new google.maps.LatLng(coords[1], coords[0]);
-      // var magnitude = results.features[i].properties.mag;
-      // var weightedLoc = {
-      //   location: latLng,
-      //   weight: Math.pow(2, magnitude)
-      // };
-      // heatmapData.push(weightedLoc);
-    }
-    fetchData = function () {
-      $.getJSON('js/earthquake.json', eqfeed_callback);
-    };
-
-    fetchData();
-
-    for (var i = 0; i < tweets.length; i++) {
-      var coords = tweets[i].coordinates;
-      var latLng = new google.maps.LatLng(coords[1], coords[0]);
-      var marker = new google.maps.Marker({
-        position: Latlng,
-        map: map,
-        title: 'Hello World!'
-      });
-    }
-
-    setInterval(fetchData, 500);
-
-    var heatmap = new google.maps.visualization.HeatmapLayer({
-      data: heatmapData,
-      dissipating: false,
+  window.tweets = function(results) {
+    // var heatmapData = [];
+    // for (var i = 0; i < tweets.length; i++) {
+    //   var coords = tweets[i].coordinates;
+    //   var latLng = new google.maps.LatLng(coords[1], coords[0]);
+    //   // var magnitude = results.features[i].properties.mag;
+    //   // var weightedLoc = {
+    //   //   location: latLng,
+    //   //   weight: Math.pow(2, magnitude)
+    //   // };
+    //   // heatmapData.push(weightedLoc);
+    // }
+    var tweets = tweets[i];
+    var coords = tweets.coordinates;
+    var latLng = new google.maps.LatLng(coords[1],coords[0]);
+    var marker = new google.maps.Marker({
+      position: latLng,
       map: map
     });
   }
+
+    // fetchData = function () {
+    //   $.getJSON('js/earthquake.json', eqfeed_callback);
+    // };
+
+    // fetchData();
+
+    // for (var i = 0; i < tweets.length; i++) {
+    //   var coords = tweets[i].coordinates;
+    //   var latLng = new google.maps.LatLng(coords[1], coords[0]);
+    //   var marker = new google.maps.Marker({
+    //     position: Latlng,
+    //     map: map,
+    //     title: 'Hello World!'
+    //   });
+    // }
+
+    // setInterval(fetchData, 500);
+
+  //   var heatmap = new google.maps.visualization.HeatmapLayer({
+  //     data: heatmapData,
+  //     dissipating: false,
+  //     map: map
+  //   });
+  // }
 
 }
 
