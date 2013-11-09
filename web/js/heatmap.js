@@ -98,6 +98,12 @@ function initialize() {
       dissipating: false,
       map: map
     });
+    $( heatmap ).animate({
+      opacity: 0.25
+    }, 5000, function() {
+      // Animation complete.
+      console.log("Called");
+    });
   }
 }
 
