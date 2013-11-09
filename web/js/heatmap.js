@@ -34,7 +34,7 @@ function initialize() {
 
   // Create a script tag and set the USGS URL as the source.
   var script = document.createElement('script');
-  script.src = 'http://earthquake.usgs.gov/earthquakes/feed/geojsonp/2.5/week';
+  script.src = 'http://localhost:8888';
   var s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(script, s);
 
@@ -50,6 +50,14 @@ function initialize() {
       };
       heatmapData.push(weightedLoc);
     }
+    fetchData = function () {
+      $.getJSON('earthquake.json', eqfeed_callback);
+    };
+
+    fetchData();
+
+    setInterval(fetchData, 500);
+
     var heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
       dissipating: false,
@@ -57,17 +65,6 @@ function initialize() {
     });
   }
 
-}
-
-function getCircle(magnitude) {
-  return {
-    path: google.maps.SymbolPath.CIRCLE,
-    fillColor: 'red',
-    fillOpacity: .2,
-    scale: Math.pow(2, magnitude) / Math.PI,
-    strokeColor: 'white',
-    strokeWeight: .5
-  };
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
