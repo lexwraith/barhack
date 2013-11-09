@@ -31,8 +31,11 @@ OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 class myStreamer(TwythonStreamer):
 
     def on_success(self, data):
+        if 'place' in data and data['place'] is not None:
+            print data['place']
         if 'coordinates' in data and data['coordinates'] is not None:
-            print data['coordinates'],data['text']
+            print data['coordinates']
+            print data['text']
         #if 'text' in data:
         #    print data['text'].encode('utf-8')
 
