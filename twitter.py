@@ -93,20 +93,20 @@ stateCodes = {
 
 
 def parseNews():
-	raw_data = urllib2.urlopen('http://api.nytimes.com/svc/news/v3/content/all/all/1?api-key=0876EADA373630F6DCE66728C4A9910E:1:68387525')
-	title_data = json.loads(raw_data.read())
-	storage_array = []
-	i = 0
-	for i in title_data["results"]:
-		title_words = i["title"].split()
-		sub_words = i["abstract"].strip(".,?!:;'()").split()
-		for titword in title_words:
-			if len(titword) > 3 and titword.isalpha():
-				storage_array.append(titword)
-		for subword in sub_words:
-			if len(subword) > 3 and subword.isalpha():
-				storage_array.append(subword)
-	return set(storage_array)
+    raw_data = urllib2.urlopen('http://api.nytimes.com/svc/news/v3/content/all/all/1?api-key=0876EADA373630F6DCE66728C4A9910E:1:68387525')
+    title_data = json.loads(raw_data.read())
+    storage_array = []
+    i = 0
+    for i in title_data["results"]:
+        title_words = i["title"].split()
+        sub_words = i["abstract"].strip(".,?!:;'()").split()
+        for titword in title_words:
+            if len(titword) > 3 and titword.isalpha():
+                storage_array.append(titword)
+        for subword in sub_words:
+            if len(subword) > 3 and subword.isalpha():
+                storage_array.append(subword)
+    return set(storage_array)
 
 def assignPolarity(text):
     response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/", headers={
@@ -117,18 +117,18 @@ def assignPolarity(text):
         value = sentiment["probability"][pol]
         #print(pol, value)
         if value >= maxval:
-        	maxpol = pol
-        	maxval = value
+            maxpol = pol
+            maxval = value
     if maxpol == 'neg':
-    	polarity = random.normalvariate(0.0,0.5) - maxval
+        polarity = random.normalvariate(0.0,0.5) - maxval
     elif maxpol == 'pos':
-    	polarity = random.normalvariate(0.0,0.5) + maxval
+        polarity = random.normalvariate(0.0,0.5) + maxval
     else:
-    	neut = random.normalvariate(0.0,0.25)
-    	if neut > 0:
-    		polarity = neut - maxval
-    	else:
-    		polarity = neut + maxval
+        neut = random.normalvariate(0.0,0.25)
+        if neut > 0:
+            polarity = neut - maxval
+        else:
+            polarity = neut + maxval
     print(maxpol, polarity)
     return [maxpol, maxval]
 
