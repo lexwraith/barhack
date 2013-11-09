@@ -43,54 +43,64 @@ function initialize() {
   var files = 0;
 
   // Looping and loading fies with timeout
+  // textdata.txt
   (function myLoop (i) {          
-    setTimeout(function () {  
+    setTimeout(function () {   
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', ('js/testdata.json'), true);
+      xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      files++;
+      if (files >=4){
+        files = 0;
+      }
+      console.log(files);
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
       xhr.send();
-      if (--i) myLoop(i);
-      console.log(i);
+      // Clear out map styles          
+      if (--i) 
+        myLoop(i);
       // Stall for 3 seconds
     }, 3000)
-  })(100);
+  })(100);  
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
+    // heatmap.setMap(null);  
 
-    // Walk yer trees
+    // Go gets it
     for (a in tweetStructure){
       var co_arr = tweetStructure[a];
-      var pol = co_arr[0];
-      var coords = co_arr[1];
-
-      var num = pol[1];
-
-      var lat = coords[0];
-      var long = coords[1];
+      for (coords in co_arr.coordinates){
+        var d = co_arr.coordinates;
+        
+        // Stating our lat/longs 
+        var first = d[0];
+        var second = d[1];
+        var magnitude = d[2];
 
         // Setting them
-        var latLng = new google.maps.LatLng(lat, long);
+        var latLng = new google.maps.LatLng(first, second);
 
         // Weighted location to express polarity
         var weightedLoc = {
           location: latLng,
-          weight: Math.pow(2, num)
+          weight: Math.pow(2, magnitude)
         };
         heatmapData.push(weightedLoc);
+      }
     }
 
-    heatmap.setMap(null);
+    heatmap.setMap(null); 
+    console.log(heatmap);
 
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: true,
+      dissipating: false,
       map: map
     });
   }
