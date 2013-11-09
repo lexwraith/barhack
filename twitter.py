@@ -30,66 +30,67 @@ OAUTH_TOKEN = "635136003-7jE8u2yLYPONdR11bMEDyHSGc1ZVFVzG7NeoK0SN"
 OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 
 stateCodes = {
-"ALABAMA":"AL",
-"ALASKA":"AK",
-"AMERICAN SAMOA":"AS",
-"ARIZONA":"AZ",
-"ARKANSAS":"AR",
-"CALIFORNIA":"CA",
-"COLORADO":"CO",
-"CONNECTICUT":"CT",
-"DELAWARE":"DE",
-"DISTRICT OF COLUMBIA":"DC",
-"FEDERATED STATES OF MICRONESIA":"FM",
-"FLORIDA":"FL",
-"GEORGIA":"GA",
-"GUAM":"GU",
-"HAWAII":"HI",
-"IDAHO":"ID",
-"ILLINOIS":"IL",
-"INDIANA":"IN",
-"IOWA":"IA",
-"KANSAS":"KS",
-"KENTUCKY":"KY",
-"LOUISIANA":"LA",
-"MAINE":"ME",
-"MARSHALL ISLANDS":"MH",
-"MARYLAND":"MD",
-"MASSACHUSETTS":"MA",
-"MICHIGAN":"MI",
-"MINNESOTA":"MN",
-"MISSISSIPPI":"MS",
-"MISSOURI":"MO",
-"MONTANA":"MT",
-"NEBRASKA":"NE",
-"NEVADA":"NV",
-"NEW HAMPSHIRE":"NH",
-"NEW JERSEY":"NJ",
-"NEW MEXICO":"NM",
-"NEW YORK":"NY",
-"NORTH CAROLINA":"NC",
-"NORTH DAKOTA":"ND",
-"NORTHERN MARIANA ISLANDS":"MP",
-"OHIO":"OH",
-"OKLAHOMA":"OK",
-"OREGON":"OR",
-"PALAU":"PW",
-"PENNSYLVANIA":"PA",
-"PUERTO RICO":"PR",
-"RHODE ISLAND":"RI",
-"SOUTH CAROLINA":"SC",
- "SOUTH DAKOTA":"SD",
-"TENNESSEE":"TN",
-"TEXAS":"TX",
-"UTAH":"UT",
-"VERMONT":"VT",
-"VIRGIN ISLANDS":"VI",
-"VIRGINIA":"VA",
-"WASHINGTON":"WA",
-"WEST VIRGINIA":"WV",
-"WISCONSIN":"WI",
-"WYOMING":"WY"
+    "ALABAMA": "AL",
+    "ALASKA": "AK",
+    "AMERICAN SAMOA": "AS",
+    "ARIZONA": "AZ",
+    "ARKANSAS": "AR",
+    "CALIFORNIA": "CA",
+    "COLORADO": "CO",
+    "CONNECTICUT": "CT",
+    "DELAWARE": "DE",
+    "DISTRICT OF COLUMBIA": "DC",
+    "FEDERATED STATES OF MICRONESIA": "FM",
+    "FLORIDA": "FL",
+    "GEORGIA": "GA",
+    "GUAM": "GU",
+    "HAWAII": "HI",
+    "IDAHO": "ID",
+    "ILLINOIS": "IL",
+    "INDIANA": "IN",
+    "IOWA": "IA",
+    "KANSAS": "KS",
+    "KENTUCKY": "KY",
+    "LOUISIANA": "LA",
+    "MAINE": "ME",
+    "MARSHALL ISLANDS": "MH",
+    "MARYLAND": "MD",
+    "MASSACHUSETTS": "MA",
+    "MICHIGAN": "MI",
+    "MINNESOTA": "MN",
+    "MISSISSIPPI": "MS",
+    "MISSOURI": "MO",
+    "MONTANA": "MT",
+    "NEBRASKA": "NE",
+    "NEVADA": "NV",
+    "NEW HAMPSHIRE": "NH",
+    "NEW JERSEY": "NJ",
+    "NEW MEXICO": "NM",
+    "NEW YORK": "NY",
+    "NORTH CAROLINA": "NC",
+    "NORTH DAKOTA": "ND",
+    "NORTHERN MARIANA ISLANDS": "MP",
+    "OHIO": "OH",
+    "OKLAHOMA": "OK",
+    "OREGON": "OR",
+    "PALAU": "PW",
+    "PENNSYLVANIA": "PA",
+    "PUERTO RICO": "PR",
+    "RHODE ISLAND": "RI",
+    "SOUTH CAROLINA": "SC",
+    "SOUTH DAKOTA": "SD",
+    "TENNESSEE": "TN",
+    "TEXAS": "TX",
+    "UTAH": "UT",
+    "VERMONT": "VT",
+    "VIRGIN ISLANDS": "VI",
+    "VIRGINIA": "VA",
+    "WASHINGTON": "WA",
+    "WEST VIRGINIA": "WV",
+    "WISCONSIN": "WI",
+    "WYOMING": "WY"
 }
+
 
 def assignPolarity(text):
     response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/", headers={
@@ -140,17 +141,18 @@ class myStreamer(TwythonStreamer):
                             float(open_json["geonames"][i]["lat"]), float(open_json["geonames"][i]["lng"])]
                         break
                 if (isinstance(state, int)):
-                        first = 0
-                        first = random.randint(
-                            0, min(NUMCITIES, len(open_json['geonames']) - 1))
-                        parsed['coordinates'] = float(open_json['geonames'][first]["lat"]), float(
-                            open_json['geonames'][first]['lng'])
-        if 'coordinates' in parsed and parsed['coordinates']:
-        	if parsed['coordinates'][0]<24 or parsed['coordinates'][0]>50 or parsed['coordinates'][1]>-66 or parsed['coordinates'][1]<-124:
-        		parsed['coordinates'] = []
+                    first = 0
+                    first = random.randint(
+                        0, min(NUMCITIES, len(open_json['geonames']) - 1))
+                    parsed['coordinates'] = float(open_json['geonames'][first]["lat"]) * random.normalvariate(1, .05), float(
+                        open_json['geonames'][first]['lng']) * random.normalvariate(1, .05)
+        if 'coordinates' in parsed and parsed['coordinates'] is not None:
+            if parsed['coordinates'][0] < 24 or parsed['coordinates'][0] > 50 or parsed['coordinates'][1] > -66 or parsed['coordinates'][1] < -124:
+                parsed['coordinates'] = None
+
         if 'text' in data:
             parsed['text'] = data['text'].encode('ascii', 'ignore')
-            if 'coordinates' in parsed and len('coordinates') > 0:
+            if 'coordinates' in parsed and parsed['coordinates'] is not None:
                 pprint(parsed['text'])
                 target = [
                     assignPolarity(parsed['text']), list(parsed['coordinates'])]
@@ -164,10 +166,10 @@ class myStreamer(TwythonStreamer):
 
     def dumpEx(self):
         f = open("web/js/testdata" + str(myStreamer.dumpstate) + ".json", "w")
-        json.dump(myStreamer.ex,f,indent=4,ensure_ascii=True)
+        json.dump(myStreamer.ex, f, indent=4, ensure_ascii=True)
         myStreamer.ex = []
         f.close()
-	myStreamer.dumpstate += 1
+        myStreamer.dumpstate += 1
         if myStreamer.dumpstate > 6:
             myStreamer.dumpstate = 1
 
@@ -188,4 +190,4 @@ if __name__ == "__main__":
     stream = myStreamer(
         CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
     stream.statuses.filter(
-        track="obamacare,ted cruz,politics,government,sexy,yolo",location=urllib.quote_plus("-74,40,-73,41"))
+        track="obamacare,ted cruz,politics,government,sexy,yolo", location=urllib.quote_plus("-74,40,-73,41"))
