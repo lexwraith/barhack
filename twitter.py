@@ -78,7 +78,7 @@ stateCodes = {
 "PUERTO RICO":"PR",
 "RHODE ISLAND":"RI",
 "SOUTH CAROLINA":"SC",
-"SOUTH DAKOTA":"SD",
+ "SOUTH DAKOTA":"SD",
 "TENNESSEE":"TN",
 "TEXAS":"TX",
 "UTAH":"UT",
@@ -150,7 +150,7 @@ class myStreamer(TwythonStreamer):
         		parsed['coordinates'] = []
         if 'text' in data:
             parsed['text'] = data['text'].encode('ascii', 'ignore')
-            if 'coordinates' in parsed:
+            if 'coordinates' in parsed and len('coordinates') > 0:
                 pprint(parsed['text'])
                 target = [
                     assignPolarity(parsed['text']), list(parsed['coordinates'])]
@@ -168,7 +168,7 @@ class myStreamer(TwythonStreamer):
         myStreamer.ex = []
         f.close()
 	myStreamer.dumpstate += 1
-        if myStreamer.dumpstate > 10:
+        if myStreamer.dumpstate > 6:
             myStreamer.dumpstate = 1
 
 
