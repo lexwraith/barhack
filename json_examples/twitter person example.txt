@@ -1,0 +1,177 @@
+[
+    {
+        "contributors_enabled": false,
+        "created_at": "Tue Jul 24 22:39:06 +0000 2012",
+        "default_profile": false,
+        "default_profile_image": false,
+        "description": "EDGY, Independent/Right/Libertarian leaning Chick in California! I'd rather be Hated for who I am, then Loved for who I am Not. We're all mad here..said the Cat",
+        "entities": {
+            "description": {
+                "urls": []
+            },
+            "url": {
+                "urls": [
+                    {
+                        "display_url": "rethinksociety.com",
+                        "expanded_url": "http://www.rethinksociety.com",
+                        "indices": [
+                            0,
+                            22
+                        ],
+                        "url": "http://t.co/zircsVPe02"
+                    }   
+                ]
+            }
+        },
+        "favourites_count": 27760,
+        "follow_request_sent": null,
+        "followers_count": 14279,
+        "following": null,
+        "friends_count": 9856,
+        "geo_enabled": false,
+        "id": 715044396,
+        "id_str": "715044396",
+        "is_translator": false,
+        "lang": "en",
+        "listed_count": 288,
+        "location": "Right of Los Angeles ",
+        "name": "RockPrincess",
+        "notifications": null,
+        "profile_background_color": "FFF04D",
+        "profile_background_image_url": "http://abs.twimg.com/images/themes/theme19/bg.gif",
+        "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme19/bg.gif",
+        "profile_background_tile": false,
+        "profile_banner_url": "https://pbs.twimg.com/profile_banners/715044396/1375853786",
+        "profile_image_url": "http://a0.twimg.com/profile_images/3513736310/4ab995084b70e9ef46275e356fbb6147_normal.jpeg",
+        "profile_image_url_https": "https://si0.twimg.com/profile_images/3513736310/4ab995084b70e9ef46275e356fbb6147_normal.jpeg",
+        "profile_link_color": "0099CC",
+        "profile_sidebar_border_color": "FFF8AD",
+        "profile_sidebar_fill_color": "F6FFD1",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "protected": false,
+        "screen_name": "Rockprincess818",
+        "status": {
+            "contributors": null,
+            "coordinates": null,
+            "created_at": "Thu Oct 10 18:02:29 +0000 2013",
+            "entities": {
+                "hashtags": [
+                    {
+                        "indices": [
+                            108,
+                            121
+                        ],
+                        "text": "signsitsfake"
+                    }
+                ],
+                "symbols": [],
+                "urls": [],
+                "user_mentions": [
+                    {
+                        "id": 1419057626,
+                        "id_str": "1419057626",
+                        "indices": [
+                            3,
+                            17
+                        ],
+                        "name": "Tax Plantation",
+                        "screen_name": "TaxPlantation"
+                    }
+                ]
+            },
+            "favorite_count": 0,
+            "favorited": false,
+            "geo": null,
+            "id": 388363922077532162,
+            "id_str": "388363922077532162",
+            "in_reply_to_screen_name": null,
+            "in_reply_to_status_id": null,
+            "in_reply_to_status_id_str": null,
+            "in_reply_to_user_id": null,
+            "in_reply_to_user_id_str": null,
+            "lang": "en",
+            "place": null,
+            "retweet_count": 24,
+            "retweeted": false,
+            "retweeted_status": {
+                "contributors": null,
+                "coordinates": null,
+                "created_at": "Thu Oct 10 17:03:32 +0000 2013",
+                "entities": {
+                    "hashtags": [
+                        {
+                            "indices": [
+                                89,
+                                102
+                            ],
+                            "text": "signsitsfake"
+                        }
+                    ],
+                    "symbols": [],
+                    "urls": [],
+                    "user_mentions": []
+                },
+                "favorite_count": 10,
+                "favorited": false,
+                "geo": null,
+                "id": 388349088791797760,
+                "id_str": "388349088791797760",
+                "in_reply_to_screen_name": null,
+                "in_reply_to_status_id": null,
+                "in_reply_to_status_id_str": null,
+                "in_reply_to_user_id": null,
+                "in_reply_to_user_id_str": null,
+                "lang": "en",
+                "place": null,
+                "retweet_count": 24,
+                "retweeted": false,
+                "source": "<a href=\"http://twitter.com/#!/download/ipad\" rel=\"nofollow\">Twitter for iPad</a>",
+                "text": "Please watch out for fake ObamaCare web sites. You can tell they are fake cuz they work. #signsitsfake",
+                "truncated": false
+            },
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "text": "RT @TaxPlantation: Please watch out for fake ObamaCare web sites. You can tell they are fake cuz they work. #signsitsfake",
+            "truncated": false
+        },
+        "statuses_count": 51298,
+        "time_zone": "Arizona",
+        "url": "http://t.co/zircsVPe02",
+        "utc_offset": -25200,
+        "verified": false
+    }
+
+
+/*
+Provided:
+Days since creation - Useful variable
+Favorites - How many tweets they've favorited over lifetime
+Followers Count - ...
+Friends Count - Number of people they are following
+Listed Count - How many lists this user is on
+Location - Nullable; physical location
+Profile Stuff:
+    Background color:
+    Link color:
+    etc.
+Status of last tweet/update
+Statuses count - how big their mouth is
+URL - People who post URLs as part of their twitter handle are more likely to be engaged...?
+Verified - Verified = more likely to engage?
+Contributors enabled - Allows other people to co-authoer their tweets...more likey to engage?
+
+Derived:
+Favorites per day - How many tweets they've favorited on average per day
+Followers per day - How many followers they gain on average per day
+Lists per day - How many lists they join on average per day
+Profile factor - How much they've interacted with their profile background,template,etc.
+Status Lapse - Time since last tweet/status update
+Status Analytics:
+    Salience
+    Mentioned-people analysis
+    ...
+Statuses per day - How many tweets/retweets they've done on average per day
+
+
+
+*/
