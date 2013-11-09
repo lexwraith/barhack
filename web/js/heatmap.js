@@ -37,6 +37,7 @@ function initialize() {
 
   // For the heatmap layer
   var heatmapData = [];
+  var heatmap;
 
   // Instantiate counter
   var files = 0;
@@ -52,15 +53,14 @@ function initialize() {
       xhr.send();             
       if (--i) myLoop(i);
       // Stall for 3 seconds
+      heatmapData.length = 0;
+      heatmap.setMap(heatmap.getMap() ? null : map);
+
     }, 3000)
   })(100);  
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
-
-    // Empty out heatmap
-    heatmapData.length = 0;
-    console.log(heatmapData);
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
