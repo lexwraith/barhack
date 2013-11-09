@@ -41,24 +41,12 @@ function initialize() {
   xhr.send();
 
   function loadTweets(results) {
-    var tweets = results;
-    var hey = tweets.getJSONObject(i).getString("@ghelenvholmes");
-    console.log(hey);
-    // console.log(tweets);
-    // $.each( tweets, function( key, value ) {
-    //   console.log( key + ": " + value );
-    // });
-    // console.log(tweets[i]);
-    for (var i = 0; i < tweets.length; i++) {
-      // var innards = tweets[i];
-      // console.log(innards);
-      console.log(tweets.length);
-      // var geoJsonObject = tweets.coordinates[i];
-      // var geometry = geoJsonObject.geometry;
+    var obj = $.parseJSON( results );
+    console.log(obj);
+    for(var key in obj){
+      console.log('key name: ' + key + ' value: ' + obj[key]);
     }
   }
-
-  
   // var heatmap = new google.maps.visualization.HeatmapLayer({
   //   data: heatMapData
   // });
