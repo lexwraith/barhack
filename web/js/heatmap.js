@@ -14,7 +14,11 @@ function initialize() {
     {
       stylers: [
         { hue: "#FA6900" },
+<<<<<<< HEAD
         { saturation: 20 }
+=======
+        { saturation: -20 }
+>>>>>>> c915e1fca2a8d809172249a18dab9645d1bb9614
       ]
     },{
       featureType: "road",
