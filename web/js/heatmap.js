@@ -43,6 +43,7 @@ function initialize() {
   var files = 0;
 
   // Looping and loading fies with timeout
+  // textdata.txt
   (function myLoop (i) {          
     setTimeout(function () {   
       var xhr = new XMLHttpRequest();
