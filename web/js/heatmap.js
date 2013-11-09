@@ -66,32 +66,40 @@ function initialize() {
     // Walk yer trees
     for (a in tweetStructure){
       var co_arr = tweetStructure[a];
-      // console.log(co_arr);
       var pol = co_arr[0];
-      var 
-      for (coords in co_arr.coordinates){
-        var d = co_arr.coordinates;
-        console.log(d);
+      var coords = co_arr[1];
+
+      var num = pol[1];
+      console.log(num);
+
+      var lat = coords[0];
+      var long = coords[1];
+
+      console.log(lat, long);
+      
+
+      // for (coords in co_arr.coordinates){
+      //   var d = co_arr.coordinates;
+      //   console.log(d);
         
-        // Stating our lat/longs 
-        var first = d[0];
-        var second = d[1];
-        var magnitude = d[2];
+      //   // Stating our lat/longs 
+      //   var first = d[0];
+      //   var second = d[1];
+      //   var magnitude = d[2];
 
         // Setting them
-        var latLng = new google.maps.LatLng(first, second);
+        var latLng = new google.maps.LatLng(lat, long);
 
         // Weighted location to express polarity
         var weightedLoc = {
           location: latLng,
-          weight: Math.pow(2, magnitude)
+          weight: Math.pow(2, num)
         };
         heatmapData.push(weightedLoc);
-      }
+      // }
     }
 
-    heatmap.setMap(null); 
-    console.log(heatmap);
+    heatmap.setMap(null);
 
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
