@@ -145,6 +145,9 @@ class myStreamer(TwythonStreamer):
                             0, min(NUMCITIES, len(open_json['geonames']) - 1))
                         parsed['coordinates'] = float(open_json['geonames'][first]["lat"]), float(
                             open_json['geonames'][first]['lng'])
+        if 'coordinates' in parsed and parsed['coordinates']:
+        	if parsed['coordinates'][0]>25 or parsed['coordinates'][0]<50 or parsed['coordinates'][1]>-65 or parsed['coordinates'][1]<-130:
+        		parsed['coordinates'] = []
         if 'text' in data:
             parsed['text'] = data['text'].encode('ascii', 'ignore')
             if 'coordinates' in parsed:
