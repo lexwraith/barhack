@@ -52,9 +52,10 @@ function initialize() {
       };
       xhr.send();
       if (--i) myLoop(i);
+      console.log(i);
       // Stall for 3 seconds
     }, 3000)
-  })(100);    
+  })(100);
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
