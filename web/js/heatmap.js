@@ -37,7 +37,7 @@ function initialize() {
 
   // For the heatmap layer
   var heatmapData = [];
-  var heatmap;
+  var heatmap = new google.maps.visualization.HeatmapLayer({});
 
   // Instantiate counter
   var files = 0;
@@ -50,14 +50,10 @@ function initialize() {
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
-      xhr.send();             
+      xhr.send();
+      // Clear out map styles          
       if (--i) myLoop(i);
       // Stall for 3 seconds
-      heatmapData.length = 0;
-      for (f in heatmap){
-        delete heatmap.f;
-      }
-
     }, 3000)
   })(100);  
 
@@ -66,6 +62,7 @@ function initialize() {
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
+    // heatmap.setMap(null);  
 
     // Go gets it
     for (a in tweetStructure){
@@ -90,15 +87,17 @@ function initialize() {
       }
     }
 
+    heatmap.setMap(null); 
+    console.log(heatmap);
+
     // Instantiate heat map
-    var heatmap = new google.maps.visualization.HeatmapLayer({
+    heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
       dissipating: false,
       map: map
     });
   }
 }
-
 
 function loadScript() {
   var script = document.createElement("script");
