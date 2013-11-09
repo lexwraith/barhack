@@ -1,15 +1,44 @@
-{ tweets : [
-	{
-		"text": "what we've been up to at @gnip -- delivering data to happy customers http://gnip.com/success_stories", 
-		"hashtags": [], 
-		"screen_name": "@gnip", 
-		"coordinates": [-75.14310264, 40.05701649]
-		},
-	{
-		"text": "what we'asdf-- delivering data to happy customers http://gnip.com/success_stories", 
-		"hashtags": ['dark', 'blue', 'beautiful'], 
-		"screen_name": "@ghelenvholmes", 
-		"coordinates": [-68, 180]
-	}
-	]
+{
+    "coordinates": {
+        "type": "Point",
+        "coordinates": [
+            30.71027043,
+            36.88661823
+        ]
+    },
+"coordinates": {
+        "type": "Point",
+        "coordinates": [
+            -30,
+            36.88661823
+        ]
+    },
+"coordinates": {
+        "type": "Point",
+        "coordinates": [
+            130.71027043,
+            36.88661823
+        ]
+    },
+"coordinates": {
+        "type": "Point",
+        "coordinates": [
+            80.71027043,
+            36.88661823
+        ]
+    },
+"coordinates": {
+        "type": "Point",
+        "coordinates": [
+            50.71027043,
+            36.88661823
+        ]
+    },
+"coordinates": {
+        "type": "Point",
+        "coordinates": [
+            75.71027043,
+            36.88661823
+        ]
+    }
 }
