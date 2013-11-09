@@ -41,7 +41,7 @@ class myStreamer(TwythonStreamer):
             if(len(myStreamer.ex) > 50):
                 with open("test.txt","w") as f:
                     for elem in myStreamer.ex:
-                        f.write(str(elem) + "\n")
+                        json.dump(package,f)
                     print myStreamer.ex
                     myStreamer.ex = []
                     print myStreamer.ex
