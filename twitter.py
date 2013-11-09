@@ -1,5 +1,6 @@
 import json
 import urllib2
+import urllib
 import ast
 import random
 import unirest
@@ -10,7 +11,7 @@ from twython import TwythonStreamer
 
 USA = "24.396,-124.624,49.384,-66.88"
 USA = "-124,24,-66,50"
-SF = "-122.75,36.8,-121.75,37.8"
+SF = "-122.75,36.82,-121,75,37.8"
 GENERIC = "the,be,to,of,and,a,in,that,have,I,it,for,not,on,with,he,as,you,do,at,this,but,his,by,from"
 
 USERNAME = "lexwraith"
@@ -28,6 +29,67 @@ CONSUMER_SECRET = "ZHGirEpnFi8vLWQH9WhFVvqmtNp06XpkyTkb89NM"  # barhack
 OAUTH_TOKEN = "635136003-7jE8u2yLYPONdR11bMEDyHSGc1ZVFVzG7NeoK0SN"
 OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 
+stateCodes = {
+"ALABAMA":"AL",
+"ALASKA":"AK",
+"AMERICAN SAMOA":"AS",
+"ARIZONA":"AZ",
+"ARKANSAS":"AR",
+"CALIFORNIA":"CA",
+"COLORADO":"CO",
+"CONNECTICUT":"CT",
+"DELAWARE":"DE",
+"DISTRICT OF COLUMBIA":"DC",
+"FEDERATED STATES OF MICRONESIA":"FM",
+"FLORIDA":"FL",
+"GEORGIA":"GA",
+"GUAM":"GU",
+"HAWAII":"HI",
+"IDAHO":"ID",
+"ILLINOIS":"IL",
+"INDIANA":"IN",
+"IOWA":"IA",
+"KANSAS":"KS",
+"KENTUCKY":"KY",
+"LOUISIANA":"LA",
+"MAINE":"ME",
+"MARSHALL ISLANDS":"MH",
+"MARYLAND":"MD",
+"MASSACHUSETTS":"MA",
+"MICHIGAN":"MI",
+"MINNESOTA":"MN",
+"MISSISSIPPI":"MS",
+"MISSOURI":"MO",
+"MONTANA":"MT",
+"NEBRASKA":"NE",
+"NEVADA":"NV",
+"NEW HAMPSHIRE":"NH",
+"NEW JERSEY":"NJ",
+"NEW MEXICO":"NM",
+"NEW YORK":"NY",
+"NORTH CAROLINA":"NC",
+"NORTH DAKOTA":"ND",
+"NORTHERN MARIANA ISLANDS":"MP",
+"OHIO":"OH",
+"OKLAHOMA":"OK",
+"OREGON":"OR",
+"PALAU":"PW",
+"PENNSYLVANIA":"PA",
+"PUERTO RICO":"PR",
+"RHODE ISLAND":"RI",
+"SOUTH CAROLINA":"SC",
+"SOUTH DAKOTA":"SD",
+"TENNESSEE":"TN",
+"TEXAS":"TX",
+"UTAH":"UT",
+"VERMONT":"VT",
+"VIRGIN ISLANDS":"VI",
+"VIRGINIA":"VA",
+"WASHINGTON":"WA",
+"WEST VIRGINIA":"WV",
+"WISCONSIN":"WI",
+"WYOMING":"WY"
+}
 
 def assignPolarity(text):
     response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/", headers={
@@ -45,9 +107,9 @@ def assignPolarity(text):
 
 class myStreamer(TwythonStreamer):
     ex = []
+    dumpstate = 1
 
     def on_success(self, data):
-	pprint(data)
         parsed = {}
         NUMCITIES = 10
         city = ""
@@ -64,7 +126,7 @@ class myStreamer(TwythonStreamer):
                         city = location[0].strip().lower().replace(' ', '_')
                         if (len(location[2].strip()) == 2):
                             state = location[2].strip().upper()
-                        else:
+                        elif location[2].strip().upper() in stateCodes:
                             state = location[2].strip().upper()[0:2]
                 else:
                     city = location.lower().replace(' ', '_')
@@ -73,22 +135,25 @@ class myStreamer(TwythonStreamer):
             open_json = ast.literal_eval(catch_json.read())
             if 'geonames' in open_json and open_json['geonames'] is not None:
                 for i in range(min(NUMCITIES, len(open_json['geonames']))):
-                    if (isinstance(state, int)):
+                    if open_json['geonames'][i] and 'adminCode1' in open_json["geonames"][i] and open_json['geonames'][i]['adminCode1'] == state:
+                        parsed["coordinates"] = [
+                            float(open_json["geonames"][i]["lat"]), float(open_json["geonames"][i]["lng"])]
+                        break
+                if (isinstance(state, int)):
                         first = 0
                         first = random.randint(
                             0, min(NUMCITIES, len(open_json['geonames']) - 1))
                         parsed['coordinates'] = float(open_json['geonames'][first]["lat"]), float(
                             open_json['geonames'][first]['lng'])
-                        break
-                    elif open_json['geonames'][i] and 'adminCode1' in open_json["geonames"][i] and open_json['geonames'][i]['adminCode1'] == state:
-                        parsed["coordinates"] = [
-                            float(open_json["geonames"][i]["lat"]), float(open_json["geonames"][i]["lng"])]
-                        break
-        #parsed['screen_name'] = '@' + data['entities']['user_mentions'][0]['screen_name']
         if 'text' in data:
             parsed['text'] = data['text'].encode('ascii', 'ignore')
             if 'coordinates' in parsed:
-                print [assignPolarity(parsed['text']), parsed['coordinates']]
+                pprint(parsed['text'])
+                target = [
+                    assignPolarity(parsed['text']), list(parsed['coordinates'])]
+                myStreamer.ex.append(target)
+                if len(myStreamer.ex) > 10:
+                    self.dumpEx()
 
     def on_error(self, status_code, data):
         print status_code
@@ -96,10 +161,7 @@ class myStreamer(TwythonStreamer):
 
     def dumpEx(self):
         f = open("testdata.txt", "w")
-        for elem in myStreamer.ex:
-            print elem
-            f.write(str(elem[0]) + "," + str(
-                elem[1]) + "," + str(elem[2]) + "\n")
+        json.dump(myStreamer.ex,f,indent=4,ensure_ascii=True)
         f.close()
 
 
@@ -118,4 +180,5 @@ def twitter_auth2(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
 if __name__ == "__main__":
     stream = myStreamer(
         CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-    stream.statuses.filter(track=GENERIC, location=USA)
+    stream.statuses.filter(
+        track="obamacare,ted cruz,politics,government,sexy,yolo",location=urllib.quote_plus("-74,40,-73,41"))
