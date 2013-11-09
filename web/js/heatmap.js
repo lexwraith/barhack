@@ -95,7 +95,7 @@ function initialize() {
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: true,
+      dissipating: false,
       map: map
     });
   }
