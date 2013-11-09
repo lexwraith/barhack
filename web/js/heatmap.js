@@ -45,30 +45,42 @@ function initialize() {
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
+    // For the heatmap layer
+    var heatmapData = [];
+
+    // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
-      for (a in tweetStructure){
-        var co_arr = tweetStructure[a];
-        for (coords in co_arr.coordinates){
-          var d = co_arr.coordinates;
-          var first = d[0];
-          var second = d[1];
 
-          var myLatlng = new google.maps.LatLng(first, second);
-          var marker = new google.maps.Marker({
-              position: myLatlng,
-              map: map,
-              title: 'hello world'
-          });
-        }
+    // Go gets it
+    for (a in tweetStructure){
+      var co_arr = tweetStructure[a];
+      for (coords in co_arr.coordinates){
+        var d = co_arr.coordinates;
+        
+        // Stating our lat/longs 
+        var first = d[0];
+        var second = d[1];
+        var magnitude = d[2];
+
+        // Setting them
+        var latLng = new google.maps.LatLng(first, second);
+
+        // Weighted location to express polarity
+        var weightedLoc = {
+          location: latLng,
+          weight: Math.pow(2, magnitude)
+        };
+        heatmapData.push(weightedLoc);
       }
+    }
+
+    // Instantiate heat map
+    var heatmap = new google.maps.visualization.HeatmapLayer({
+      data: heatmapData,
+      dissipating: false,
+      map: map
+    });
   }
-
-  // }
-  // var heatmap = new google.maps.visualization.HeatmapLayer({
-  //   data: heatMapData
-  // });
-
-  // heatmap.setMap(map);
 }
 
 
