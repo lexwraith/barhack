@@ -44,29 +44,21 @@ function initialize() {
 
   // Looping and loading fies with timeout
   (function myLoop (i) {          
-    setTimeout(function () {  
-    for (files = 0; files < 4; files++) {
-      if (files <= 3){
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', ('js/tweets'+ files + '.json'), true);
-        console.log(files);
-        xhr.onload = function() {
-          loadTweets(this.responseText);
-        };
-        xhr.send();
-      } else {
+    setTimeout(function () {   
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      files++;
+      if (files >=4){
         files = 0;
       }
-    }
-      // var xhr = new XMLHttpRequest();
-      // xhr.open('GET', ('js/tweets'+ files + '.json'), true);
-      // console.log(files);
-      // xhr.onload = function() {
-      //   loadTweets(this.responseText);
-      // };
-      // xhr.send();
+      console.log(files);
+      xhr.onload = function() {
+        loadTweets(this.responseText);
+      };
+      xhr.send();
       // Clear out map styles          
-      if (--i) myLoop(i);
+      if (--i) 
+        myLoop(i);
       // Stall for 3 seconds
     }, 3000)
   })(100);  
