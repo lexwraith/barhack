@@ -54,7 +54,9 @@ function initialize() {
       if (--i) myLoop(i);
       // Stall for 3 seconds
       heatmapData.length = 0;
-      heatmap.setMap(heatmap.getMap() ? null : map);
+      for (f in heatmap){
+        delete heatmap.f;
+      }
 
     }, 3000)
   })(100);  
