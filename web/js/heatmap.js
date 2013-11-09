@@ -47,6 +47,7 @@ function initialize() {
     setTimeout(function () {   
       var xhr = new XMLHttpRequest();
       xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      console.log(files);
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
