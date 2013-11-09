@@ -13,3 +13,8 @@ Imagine a few use cases:
 * _Advertising_: the ability to track where your store is trending when considering where to open pilot stores.
 
 In essence, this app will highlight anything with high variance that changes on a day-to-day basis. Most notable is that this app gets its information from interactions instead of demographics, meaning that you are able to see how people actually feel about certain topics instead of stereotyping based on race and gender.
+
+## Team Barhack
+* [Mike Nyugen](https://github.com/lexwraith), back-end developer
+* [Chad Miller](https://github.com/cmiller0330), back-end developer
+* [Helen V. Holmes](hhttps://github.com/helenvholmes), front-end developer
