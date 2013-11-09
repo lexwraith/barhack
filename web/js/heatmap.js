@@ -34,7 +34,7 @@ function initialize() {
 
   // Create a script tag and set the USGS URL as the source.
   var script = document.createElement('script');
-  script.src = 'http://localhost:8888';
+  script.src = '../middle/earthquake.json';
   var s = document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(script, s);
 
