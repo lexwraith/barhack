@@ -47,6 +47,7 @@ class myStreamer(TwythonStreamer):
     ex = []
 
     def on_success(self, data):
+	pprint(data)
         parsed = {}
         NUMCITIES = 10
         city = ""

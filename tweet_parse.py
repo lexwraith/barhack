@@ -6,6 +6,68 @@ import unirest
 import ast
 from pprint import pprint
 
+stateCodes = {
+"ALABAMA":"AL",
+"ALASKA":"AK",
+"AMERICAN SAMOA":"AS",
+"ARIZONA":"AZ",
+"ARKANSAS":"AR",
+"CALIFORNIA":"CA",
+"COLORADO":"CO",
+"CONNECTICUT":"CT",
+"DELAWARE":"DE",
+"DISTRICT OF COLUMBIA":"DC",
+"FEDERATED STATES OF MICRONESIA":"FM",
+"FLORIDA":"FL",
+"GEORGIA":"GA",
+"GUAM":"GU",
+"HAWAII":"HI",
+"IDAHO":"ID",
+"ILLINOIS":"IL",
+"INDIANA":"IN",
+"IOWA":"IA",
+"KANSAS":"KS",
+"KENTUCKY":"KY",
+"LOUISIANA":"LA",
+"MAINE":"ME",
+"MARSHALL ISLANDS":"MH",
+"MARYLAND":"MD",
+"MASSACHUSETTS":"MA",
+"MICHIGAN":"MI",
+"MINNESOTA":"MN",
+"MISSISSIPPI":"MS",
+"MISSOURI":"MO",
+"MONTANA":"MT",
+"NEBRASKA":"NE",
+"NEVADA":"NV",
+"NEW HAMPSHIRE":"NH",
+"NEW JERSEY":"NJ",
+"NEW MEXICO":"NM",
+"NEW YORK":"NY",
+"NORTH CAROLINA":"NC",
+"NORTH DAKOTA":"ND",
+"NORTHERN MARIANA ISLANDS":"MP",
+"OHIO":"OH",
+"OKLAHOMA":"OK",
+"OREGON":"OR",
+"PALAU":"PW",
+"PENNSYLVANIA":"PA",
+"PUERTO RICO":"PR",
+"RHODE ISLAND":"RI",
+"SOUTH CAROLINA":"SC",
+"SOUTH DAKOTA":"SD",
+"TENNESSEE":"TN",
+"TEXAS":"TX",
+"UTAH":"UT",
+"VERMONT":"VT",
+"VIRGIN ISLANDS":"VI",
+"VIRGINIA":"VA",
+"WASHINGTON":"WA",
+"WEST VIRGINIA":"WV",
+"WISCONSIN":"WI",
+"WYOMING":"WY"
+}
+
 def assignPolarity(text):
 	response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/",headers={"X-Mashape-Authorization": "q9WreMnPjMW5iL3yNpbnM4jwRmVr6Sbu"},params={"text": text,"language": "english"})
   	sentiment = response.body
@@ -29,16 +91,19 @@ def jsonParse(json_file):
 	else:
 		state = 0
 		location = data["user"]["location"]
+		
+		# MIKE! COPY FROM HERE...
 		if (',' in location):
 			location = location.partition(',')
 			if (len(location) == 3):
 				city = location[0].strip().lower().replace(' ','_')
 				if (len(location[2].strip()) == 2):
 					state = location[2].strip().upper()
-				else:
-					state = location[2].strip().upper()[0:2]
+				elif (location[2].strip().upper() in stateCodes):
+					state = stateCodes[location[2].strip().upper()]
 		else:
 			city = location.lower().replace(' ','_')
+		# ... TO HERE!!!! And the stateCodes dictionary ;)
 		
 		catch_json = urllib2.urlopen('http://api.geonames.org/searchJSON?q='+city+'&maxRows='+str(NUMCITIES)+'&username=cmiller0330')
 		open_json = ast.literal_eval(catch_json.read())
