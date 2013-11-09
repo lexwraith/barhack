@@ -43,9 +43,8 @@ function initialize() {
   var files = 0;
 
   // Looping and loading fies with timeout
-  // textdata.txt
   (function myLoop (i) {          
-    // setTimeout(function () {  
+    setTimeout(function () {  
       var xhr = new XMLHttpRequest();
       xhr.open('GET', ('js/testdata.json'), true);
       xhr.onload = function() {
@@ -54,7 +53,7 @@ function initialize() {
       xhr.send();
       if (--i) myLoop(i);
       // Stall for 3 seconds
-    // }, 3000)
+    }, 3000)
   })(100);    
 
   // Parse out the JSON and create markers
@@ -90,7 +89,7 @@ function initialize() {
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: false,
+      dissipating: true,
       map: map
     });
   }

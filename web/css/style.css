@@ -9,3 +9,9 @@ body {
 #map-canvas {
   height: 100%;
 }
+input {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 300px;
+}
