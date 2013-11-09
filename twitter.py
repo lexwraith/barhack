@@ -1,9 +1,12 @@
 import pandas as pd
 import json
+import django.http
 
+from pprint import pprint
 from datetime import datetime
 from collections import namedtuple
 from twython import Twython
+from twython import TwythonStreamer
 
 USERNAME = "lexwraith"
 PASSWORD = "PassWord"
@@ -15,51 +18,37 @@ AUTHORIZE_URL = "https://api.twitter.com/oauth/authorize?oauth_token="
 REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token"
 ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token"
 
-CONSUMER_KEY = "crd6qE1BNWFWqZhVXfBtug"
-CONSUMER_SECRET = "ND8Wd59Dw8Cju7uezeTmJuSowjbGsDiXwajRvzVfQ"
-OAUTH_TOKEN = "635136003-bmxyoG4XmsqslD2gwpE4UODqde9TpLc6PYkD0nFt"
+CONSUMER_KEY = "1U4kULn0xaVfoX8WjtPPLg"  # barhack
+CONSUMER_SECRET = "ZHGirEpnFi8vLWQH9WhFVvqmtNp06XpkyTkb89NM"  # barhack
+OAUTH_TOKEN = "635136003-7jE8u2yLYPONdR11bMEDyHSGc1ZVFVzG7NeoK0SN"
+OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 
 
-def extract(dataframe, names_label="screen_name", column="followers_count", sort_column=1):
-    """
-    Pulls out a sorted list with names_label and sorted by the column argument.
-    """
-    package = []
-    for z in range(len(dataframe)):
-        package.append((dataframe[names_label][z], dataframe[column][z]))
-    return sorted(package, key=lambda x: x[sort_column])
+class myStreamer(TwythonStreamer):
+
+    def on_success(self, data):
+        if 'text' in data:
+            print data['text'].encode('utf-8')
+
+    def on_error(self, status_code, data):
+        print status_code
+
+        # Want to stop trying to get data because of the error?
+        # Uncomment the next line!
+        # self.disconnect()
 
 
-def twitter_auth(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
+def twitter_auth1(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
+    return Twython(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+
+
+def twitter_auth2(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
     """
     Returns a Twython object that is fully logged in and ready to go.
     """
     twitter = Twython(CONSUMER_KEY, CONSUMER_SECRET, oauth_version=2)
     ACCESS_TOKEN = twitter.obtain_access_token()
     return Twython(CONSUMER_KEY, CONSUMER_SECRET, access_token=ACCESS_TOKEN)
-
-
-def getStuff(t):
-    """
-    Pulls out useful information from a Twitter JSON.
-    Returns it in namedTuple format...?
-    """
-    daysAlive = (
-        datetime.strptime(str(t["created_at"]), "%a %b %d %H:%M:%S") - datetime.today()).days
-    favoritesCount = t["favourites_count"]
-    followersCount = t["followers_count"]
-    followingCount = t["friends_count"]
-    listsCount = t["listed_count"]
-    location = t["location"]
-    #profile = None
-    tweetCount = t["statuses_count"]
-    #URL = t["url"]
-    boolVerified = t["verified"]
-    boolContrib = t["contributors_enabled"]
-    favsPerDay = favoritesCount / float(daysAlive)
-    folsPerDay = followersCount / float(daysAlive)
-    listsPerDay = listsCount / float(daysAlive)
-    print daysAlive,favoritesCount,followersCount,followingCount,listsCount,location,tweetCount,boolVerified,boolContrib,favsPerDay,folsPerDay,listsPerDay
 
 
 def twitter_lookup(userbatch):
@@ -69,7 +58,7 @@ def twitter_lookup(userbatch):
     Note that Twitter followers who have deactivated their accounts will
     not appear on the end result.
     """
-    assert type(userbatch) == list ,"Argument is supposed to be a list!"
+    assert isinstance(userbatch, list), "Argument is supposed to be a list!"
     twitter = twitter_auth()
     batches = []
     while(len(userbatch) > TWITTER_REQUEST_LIMIT):
@@ -82,5 +71,5 @@ def twitter_lookup(userbatch):
     return pd.concat(batches, ignore_index=True)
 
 if __name__ == "__main__":
-    t = twitter_auth()
-    t.search(q='food',result_type='popular')
+    stream = myStreamer(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+    stream.statuses.filter(track='twitter')
