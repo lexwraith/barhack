@@ -41,18 +41,20 @@ function initialize() {
   xhr.send();
 
   function loadTweets(results) {
-    var obj = $.parseJSON(results);
-    var coords = obj.coordinates.coordinates;
-    for (i in coords){
-       var myLatlng = new google.maps.LatLng(coords[0],coords[1]);
-       var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map
-    });
-    }
-    // for (i in coords){
+    var tweetStructure = $.parseJSON(results);
 
-    // }
+    for (i in obj){
+      var coords = obj.coordinates;
+      console.log(coords);
+      for (x in coords){
+        console.log(x);
+      }
+    //    var myLatlng = new google.maps.LatLng(coords[0],coords[1]);
+    //    var marker = new google.maps.Marker({
+    //     position: myLatlng,
+    //     map: map
+    // });
+    }
   }
   // var heatmap = new google.maps.visualization.HeatmapLayer({
   //   data: heatMapData
