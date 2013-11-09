@@ -40,19 +40,30 @@ function initialize() {
   };
   xhr.send();
 
-  function callback(results) {
+  function loadTweets(results) {
+    var tweets = results;
+    var hey = tweets.getJSONObject(i).getString("@ghelenvholmes");
+    console.log(hey);
+    // console.log(tweets);
+    // $.each( tweets, function( key, value ) {
+    //   console.log( key + ": " + value );
+    // });
+    // console.log(tweets[i]);
     for (var i = 0; i < tweets.length; i++) {
-      var geoJsonObject = tweets.coordinates[i];
-      var geometry = geoJsonObject.geometry;
+      // var innards = tweets[i];
+      // console.log(innards);
+      console.log(tweets.length);
+      // var geoJsonObject = tweets.coordinates[i];
+      // var geometry = geoJsonObject.geometry;
     }
   }
 
   
-  var heatmap = new google.maps.visualization.HeatmapLayer({
-    data: heatMapData
-  });
+  // var heatmap = new google.maps.visualization.HeatmapLayer({
+  //   data: heatMapData
+  // });
 
-  heatmap.setMap(map);
+  // heatmap.setMap(map);
 }
 
 
