@@ -44,17 +44,23 @@ function initialize() {
 
   // Looping and loading fies with timeout
   (function myLoop (i) {          
-    setTimeout(function () {  
+    setTimeout(function () {   
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', ('js/testdata.json'), true);
+      xhr.open('GET', ('js/testdata'+ files + '.json'), true);
+      files++;
+      if (files >=6){
+        files = 0;
+      }
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
       xhr.send();
-      if (--i) myLoop(i);
+      // Clear out map styles          
+      if (--i) 
+        myLoop(i);
       // Stall for 3 seconds
-    }, 15000)
-  })(100);    
+    }, 3000)
+  })(100);  
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
@@ -72,7 +78,7 @@ function initialize() {
 
       var lat = coords[0];
       var long = coords[1];
-
+      
         // Setting them
         var latLng = new google.maps.LatLng(lat, long);
 
@@ -89,7 +95,7 @@ function initialize() {
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: true,
+      dissipating: false,
       map: map
     });
   }
