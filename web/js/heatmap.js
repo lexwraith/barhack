@@ -1,7 +1,7 @@
 function initialize() {
   var mapOptions = {
-    center: new google.maps.LatLng(-15, -55),
-    zoom: 3,
+    center: new google.maps.LatLng(35, -95),
+    zoom: 4,
     disableDefaultUI: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -35,18 +35,34 @@ function initialize() {
   // Set to map
   map.setOptions({styles: styles});
 
-  // Get the JSON
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'js/tweets.json', true);
-  xhr.onload = function() {
-    loadTweets(this.responseText);
-  };
-  xhr.send();
+  // For the heatmap layer
+  var heatmapData = [];
+  var heatmap;
+
+  // Instantiate counter
+  var files = 0;
+
+  // Looping and loading fies with timeout
+  (function myLoop (i) {          
+    setTimeout(function () {   
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      xhr.onload = function() {
+        loadTweets(this.responseText);
+      };
+      xhr.send();             
+      if (--i) myLoop(i);
+      // Stall for 3 seconds
+      heatmapData.length = 0;
+      for (f in heatmap){
+        delete heatmap.f;
+      }
+
+    }, 3000)
+  })(100);  
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
-    // For the heatmap layer
-    var heatmapData = [];
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
