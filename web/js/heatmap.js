@@ -53,7 +53,7 @@ function initialize() {
       xhr.send();
       if (--i) myLoop(i);
       // Stall for 3 seconds
-    }, 3000)
+    }, 15000)
   })(100);    
 
   // Parse out the JSON and create markers

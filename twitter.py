@@ -163,9 +163,13 @@ class myStreamer(TwythonStreamer):
         # self.disconnect
 
     def dumpEx(self):
-        f = open("testdata.txt", "w")
+        f = open("web/js/testdata" + str(myStreamer.dumpstate) + ".json", "w")
         json.dump(myStreamer.ex,f,indent=4,ensure_ascii=True)
+        myStreamer.ex = []
         f.close()
+	myStreamer.dumpstate += 1
+        if myStreamer.dumpstate > 10:
+            myStreamer.dumpstate = 1
 
 
 def twitter_auth1(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
