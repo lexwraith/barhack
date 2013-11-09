@@ -8,6 +8,10 @@ from collections import namedtuple
 from twython import Twython
 from twython import TwythonStreamer
 
+USA = "-124.624960,48.368122,-80.477557"
+SF="-122.75,36.8,-121.75,37.8"
+GENERIC="the,be,to,of,and,a,in,that,have,I,it,for,not,on,with,he,as,you,do,at,this,but,his,by,from"
+
 USERNAME = "lexwraith"
 PASSWORD = "PassWord"
 
@@ -27,8 +31,10 @@ OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 class myStreamer(TwythonStreamer):
 
     def on_success(self, data):
-        if 'text' in data:
-            print data['text'].encode('utf-8')
+        if 'coordinates' in data and data['coordinates'] is not None:
+            print data['coordinates'],data['text']
+        #if 'text' in data:
+        #    print data['text'].encode('utf-8')
 
     def on_error(self, status_code, data):
         print status_code
@@ -72,4 +78,3 @@ def twitter_lookup(userbatch):
 
 if __name__ == "__main__":
     stream = myStreamer(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-    
