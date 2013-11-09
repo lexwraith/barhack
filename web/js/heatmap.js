@@ -45,37 +45,33 @@ function initialize() {
   // Looping and loading fies with timeout
   // textdata.txt
   (function myLoop (i) {          
-    setTimeout(function () {   
+    // setTimeout(function () {  
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', ('js/tweets'+ files + '.json'), true);
-      files++;
-      if (files >=4){
-        files = 0;
-      }
-      console.log(files);
+      xhr.open('GET', ('js/testdata.json'), true);
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
       xhr.send();
-      // Clear out map styles          
-      if (--i) 
-        myLoop(i);
+      if (--i) myLoop(i);
       // Stall for 3 seconds
-    }, 3000)
-  })(100);  
+    // }, 3000)
+  })(100);    
 
   // Parse out the JSON and create markers
   function loadTweets(results) {
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
-    // heatmap.setMap(null);  
 
-    // Go gets it
+    // Walk yer trees
     for (a in tweetStructure){
       var co_arr = tweetStructure[a];
+      // console.log(co_arr);
+      var pol = co_arr[0];
+      var 
       for (coords in co_arr.coordinates){
         var d = co_arr.coordinates;
+        console.log(d);
         
         // Stating our lat/longs 
         var first = d[0];
