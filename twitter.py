@@ -29,6 +29,67 @@ CONSUMER_SECRET = "ZHGirEpnFi8vLWQH9WhFVvqmtNp06XpkyTkb89NM"  # barhack
 OAUTH_TOKEN = "635136003-7jE8u2yLYPONdR11bMEDyHSGc1ZVFVzG7NeoK0SN"
 OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 
+stateCodes = {
+"ALABAMA":"AL",
+"ALASKA":"AK",
+"AMERICAN SAMOA":"AS",
+"ARIZONA":"AZ",
+"ARKANSAS":"AR",
+"CALIFORNIA":"CA",
+"COLORADO":"CO",
+"CONNECTICUT":"CT",
+"DELAWARE":"DE",
+"DISTRICT OF COLUMBIA":"DC",
+"FEDERATED STATES OF MICRONESIA":"FM",
+"FLORIDA":"FL",
+"GEORGIA":"GA",
+"GUAM":"GU",
+"HAWAII":"HI",
+"IDAHO":"ID",
+"ILLINOIS":"IL",
+"INDIANA":"IN",
+"IOWA":"IA",
+"KANSAS":"KS",
+"KENTUCKY":"KY",
+"LOUISIANA":"LA",
+"MAINE":"ME",
+"MARSHALL ISLANDS":"MH",
+"MARYLAND":"MD",
+"MASSACHUSETTS":"MA",
+"MICHIGAN":"MI",
+"MINNESOTA":"MN",
+"MISSISSIPPI":"MS",
+"MISSOURI":"MO",
+"MONTANA":"MT",
+"NEBRASKA":"NE",
+"NEVADA":"NV",
+"NEW HAMPSHIRE":"NH",
+"NEW JERSEY":"NJ",
+"NEW MEXICO":"NM",
+"NEW YORK":"NY",
+"NORTH CAROLINA":"NC",
+"NORTH DAKOTA":"ND",
+"NORTHERN MARIANA ISLANDS":"MP",
+"OHIO":"OH",
+"OKLAHOMA":"OK",
+"OREGON":"OR",
+"PALAU":"PW",
+"PENNSYLVANIA":"PA",
+"PUERTO RICO":"PR",
+"RHODE ISLAND":"RI",
+"SOUTH CAROLINA":"SC",
+"SOUTH DAKOTA":"SD",
+"TENNESSEE":"TN",
+"TEXAS":"TX",
+"UTAH":"UT",
+"VERMONT":"VT",
+"VIRGIN ISLANDS":"VI",
+"VIRGINIA":"VA",
+"WASHINGTON":"WA",
+"WEST VIRGINIA":"WV",
+"WISCONSIN":"WI",
+"WYOMING":"WY"
+}
 
 def assignPolarity(text):
     response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/", headers={
@@ -49,7 +110,6 @@ class myStreamer(TwythonStreamer):
     dumpstate = 1
 
     def on_success(self, data):
-	pprint(data)
         parsed = {}
         NUMCITIES = 10
         city = ""
@@ -66,7 +126,7 @@ class myStreamer(TwythonStreamer):
                         city = location[0].strip().lower().replace(' ', '_')
                         if (len(location[2].strip()) == 2):
                             state = location[2].strip().upper()
-                        else:
+                        elif location[2].strip().upper() in stateCodes:
                             state = location[2].strip().upper()[0:2]
                 else:
                     city = location.lower().replace(' ', '_')
@@ -89,7 +149,8 @@ class myStreamer(TwythonStreamer):
             parsed['text'] = data['text'].encode('ascii', 'ignore')
             if 'coordinates' in parsed:
                 pprint(parsed['text'])
-                target = [assignPolarity(parsed['text']), list(parsed['coordinates'])]
+                target = [
+                    assignPolarity(parsed['text']), list(parsed['coordinates'])]
                 myStreamer.ex.append(target)
                 if len(myStreamer.ex) > 10:
                     self.dumpEx()
@@ -119,4 +180,5 @@ def twitter_auth2(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
 if __name__ == "__main__":
     stream = myStreamer(
         CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-    stream.statuses.filter(track="obamacare,ted cruz,politics,government,sexy,yolo",location=urllib.quote_plus("-74,40,-73,41"))
+    stream.statuses.filter(
+        track="obamacare,ted cruz,politics,government,sexy,yolo",location=urllib.quote_plus("-74,40,-73,41"))
