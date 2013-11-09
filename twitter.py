@@ -1,6 +1,9 @@
 import pandas as pd
 import json
 import django.http
+import json
+import urllib2
+import ast
 
 from pprint import pprint
 from datetime import datetime
@@ -9,8 +12,8 @@ from twython import Twython
 from twython import TwythonStreamer
 
 USA = "-124.624960,48.368122,-80.477557"
-SF="-122.75,36.8,-121.75,37.8"
-GENERIC="the,be,to,of,and,a,in,that,have,I,it,for,not,on,with,he,as,you,do,at,this,but,his,by,from"
+SF = "-122.75,36.8,-121.75,37.8"
+GENERIC = "the,be,to,of,and,a,in,that,have,I,it,for,not,on,with,he,as,you,do,at,this,but,his,by,from"
 
 USERNAME = "lexwraith"
 PASSWORD = "PassWord"
@@ -29,23 +32,26 @@ OAUTH_TOKEN_SECRET = "5mmff9ewLChIeP3jV5rb5DR6f4ylRVF0To2VSZVRC5DFM"
 
 
 class myStreamer(TwythonStreamer):
+    ex = []
 
     def on_success(self, data):
-        if 'place' in data and data['place'] is not None:
-            print data['place']
         if 'coordinates' in data and data['coordinates'] is not None:
-            print data['coordinates']
-            print data['text']
-        #if 'text' in data:
-        #    print data['text'].encode('utf-8')
+            myStreamer.ex.append(
+                [data['coordinates']['coordinates'][0], data['coordinates']['coordinates'][1], data['text'].encode('ascii')])
+            if len(myStreamer.ex) > 5:
+                self.dumpEx()
+                myStreamer.ex = []
 
     def on_error(self, status_code, data):
         print status_code
+        # self.disconnect
 
-        # Want to stop trying to get data because of the error?
-        # Uncomment the next line!
-        # self.disconnect()
-
+    def dumpEx(self):
+        f = open("testdata.txt", "w")
+        for elem in myStreamer.ex:
+            print elem
+            f.write(str(elem[0]) + "," + str(elem[1]) + "," + str(elem[2]) + "\n")
+        f.close()
 
 def twitter_auth1(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
     return Twython(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
@@ -59,25 +65,7 @@ def twitter_auth2(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET):
     ACCESS_TOKEN = twitter.obtain_access_token()
     return Twython(CONSUMER_KEY, CONSUMER_SECRET, access_token=ACCESS_TOKEN)
 
-
-def twitter_lookup(userbatch):
-    """
-    Returns a large JSON object.
-
-    Note that Twitter followers who have deactivated their accounts will
-    not appear on the end result.
-    """
-    assert isinstance(userbatch, list), "Argument is supposed to be a list!"
-    twitter = twitter_auth()
-    batches = []
-    while(len(userbatch) > TWITTER_REQUEST_LIMIT):
-        batches.append(convertListToCSV(userbatch[:TWITTER_REQUEST_LIMIT]))
-        userbatch = userbatch[TWITTER_REQUEST_LIMIT:]
-    batches.append(convertListToCSV(userbatch[:]))
-    for elem in range(len(batches)):
-        batches[elem] = pd.read_json(
-            json.dumps(twitter.lookup_user(screen_name=batches[elem])))
-    return pd.concat(batches, ignore_index=True)
-
 if __name__ == "__main__":
-    stream = myStreamer(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+    stream = myStreamer(
+        CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+    stream.statuses.filter(track=GENERIC, location=USA)
