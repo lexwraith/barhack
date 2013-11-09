@@ -1,12 +1,4 @@
 {
-  "coordinates": {
-    "coordinates":
-    [
-        -75.14310264,
-        40.05701649
-    ],
-    "type":"Point"
-  },
   "created_at": "Thu Oct 21 16:02:46 +0000 2010",
   "favorited": false,
   "truncated": false,
