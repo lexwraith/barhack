@@ -43,16 +43,14 @@ function initialize() {
   var files = 0;
 
   // Looping and loading fies with timeout
-  // textdata.txt
   (function myLoop (i) {          
     setTimeout(function () {   
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      xhr.open('GET', ('js/testdata'+ files + '.json'), true);
       files++;
-      if (files >=5){
+      if (files >=6){
         files = 0;
       }
-      console.log(files);
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
@@ -69,38 +67,35 @@ function initialize() {
 
     // Parse out our JSON file
     var tweetStructure = $.parseJSON(results);
-    // heatmap.setMap(null);  
 
-    // Go gets it
+    // Walk yer trees
     for (a in tweetStructure){
       var co_arr = tweetStructure[a];
-      for (coords in co_arr.coordinates){
-        var d = co_arr.coordinates;
-        
-        // Stating our lat/longs 
-        var first = d[0];
-        var second = d[1];
-        var magnitude = d[2];
+      var pol = co_arr[0];
+      var coords = co_arr[1];
 
+      var num = pol[1];
+
+      var lat = coords[0];
+      var long = coords[1];
+      
         // Setting them
-        var latLng = new google.maps.LatLng(first, second);
+        var latLng = new google.maps.LatLng(lat, long);
 
         // Weighted location to express polarity
         var weightedLoc = {
           location: latLng,
-          weight: Math.pow(2, magnitude)
+          weight: Math.pow(2, num)
         };
         heatmapData.push(weightedLoc);
-      }
     }
 
-    heatmap.setMap(null); 
-    console.log(heatmap);
+    heatmap.setMap(null);
 
     // Instantiate heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapData,
-      dissipating: false,
+      dissipating: true,
       map: map
     });
   }
