@@ -1,14 +1,15 @@
 function initialize() {
   var mapOptions = {
     center: new google.maps.LatLng(-15, -55),
-    zoom: 4,
+    zoom: 3,
     disableDefaultUI: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
+  // Instantiate the map
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-  // Styles
+  // Styles, Our map's still pretty ugly
   var styles = [
     {
       stylers: [
@@ -30,9 +31,11 @@ function initialize() {
       ]
     }
   ];
+
   // Set to map
   map.setOptions({styles: styles});
 
+  // Get the JSON
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'js/tweets.json', true);
   xhr.onload = function() {
@@ -40,22 +43,27 @@ function initialize() {
   };
   xhr.send();
 
+  // Parse out the JSON and create markers
   function loadTweets(results) {
     var tweetStructure = $.parseJSON(results);
+      for (a in tweetStructure){
+        var co_arr = tweetStructure[a];
+        for (coords in co_arr.coordinates){
+          var d = co_arr.coordinates;
+          var first = d[0];
+          var second = d[1];
 
-    for (i in obj){
-      var coords = obj.coordinates;
-      console.log(coords);
-      for (x in coords){
-        console.log(x);
+          var myLatlng = new google.maps.LatLng(first, second);
+          var marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map,
+              title: 'hello world'
+          });
+        }
       }
-    //    var myLatlng = new google.maps.LatLng(coords[0],coords[1]);
-    //    var marker = new google.maps.Marker({
-    //     position: myLatlng,
-    //     map: map
-    // });
-    }
   }
+
+  // }
   // var heatmap = new google.maps.visualization.HeatmapLayer({
   //   data: heatMapData
   // });

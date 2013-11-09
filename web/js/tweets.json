@@ -1,44 +1,50 @@
-{
-    "coordinates": {
-        "type": "Point",
-        "coordinates": [
-            30.71027043,
-            36.88661823
-        ]
-    },
-"coordinates": {
-        "type": "Point",
-        "coordinates": [
-            -30,
-            36.88661823
-        ]
-    },
-"coordinates": {
-        "type": "Point",
-        "coordinates": [
-            130.71027043,
-            36.88661823
-        ]
-    },
-"coordinates": {
-        "type": "Point",
-        "coordinates": [
-            80.71027043,
-            36.88661823
-        ]
-    },
-"coordinates": {
-        "type": "Point",
-        "coordinates": [
-            50.71027043,
-            36.88661823
-        ]
-    },
-"coordinates": {
-        "type": "Point",
+[
+    {
         "coordinates": [
             75.71027043,
-            36.88661823
+            26.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            50.71027043,
+            26.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            50.71027043,
+            126.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            75.71027043,
+            90.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            25.71027043,
+            100.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            80.71027043,
+            15.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            -80.71027043,
+            15.88661823
+        ]
+    },
+    {
+        "coordinates": [
+            -50.71027043,
+            30.88661823
         ]
     }
-}
+]
