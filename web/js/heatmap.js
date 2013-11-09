@@ -43,16 +43,23 @@ function initialize() {
   var files = 0;
 
   // Looping and loading fies with timeout
+  // textdata.txt
   (function myLoop (i) {          
     setTimeout(function () {   
       var xhr = new XMLHttpRequest();
       xhr.open('GET', ('js/tweets'+ files + '.json'), true);
+      files++;
+      if (files >=4){
+        files = 0;
+      }
+      console.log(files);
       xhr.onload = function() {
         loadTweets(this.responseText);
       };
       xhr.send();
       // Clear out map styles          
-      if (--i) myLoop(i);
+      if (--i) 
+        myLoop(i);
       // Stall for 3 seconds
     }, 3000)
   })(100);  
