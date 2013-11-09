@@ -5,6 +5,7 @@ function initialize() {
     disableDefaultUI: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
+
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
   // Styles
@@ -32,11 +33,13 @@ function initialize() {
   // Set to map
   map.setOptions({styles: styles});
 
-  // Create a script tag and set the USGS URL as the source.
-  var script = 'js/tweets.json';
+  tweets();
+}
 
-  window.tweets = function(results) {
-    var tweets = script.tweets[i];
+var script = 'js/tweets.json';
+
+var tweets = $.getJSON(script, function(data) {
+    var tweetly = script.tweets[i];
     var coords = tweets.coordinates;
     console.log(coords);
     var latLng = new google.maps.LatLng(coords[1],coords[0]);
@@ -44,9 +47,13 @@ function initialize() {
       position: latLng,
       map: map
     });
-  }
+  });
 
-  tweets();
+function loadScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "http://maps.googleapis.com/maps/api/js?libraries=geometry,visualization&key=AIzaSyD8o5eliFAEzQ4uHwjOUQMGe7wNCbZGTeE&sensor=true&callback=initialize";
+  document.body.appendChild(script);
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+window.onload = loadScript;
