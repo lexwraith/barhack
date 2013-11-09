@@ -112,14 +112,24 @@ def assignPolarity(text):
     response = unirest.post("https://japerk-text-processing.p.mashape.com/sentiment/", headers={
                             "X-Mashape-Authorization": "q9WreMnPjMW5iL3yNpbnM4jwRmVr6Sbu"}, params={"text": text, "language": "english"})
     sentiment = response.body
-    maxval = 0
-    maxpol = ''
+    maxval = 0.0
     for pol in sentiment["probability"]:
         value = sentiment["probability"][pol]
-        if value >= abs(maxval):
+        #print(pol, value)
+        if value >= maxval:
         	maxpol = pol
-        if maxpol == 'neg':
-            maxval = -maxval
+        	maxval = value
+    if maxpol == 'neg':
+    	polarity = random.normalvariate(0.0,0.5) - maxval
+    elif maxpol == 'pos':
+    	polarity = random.normalvariate(0.0,0.5) + maxval
+    else:
+    	neut = random.normalvariate(0.0,0.25)
+    	if neut > 0:
+    		polarity = neut - maxval
+    	else:
+    		polarity = neut + maxval
+    print(maxpol, polarity)
     return [maxpol, maxval]
 
 
