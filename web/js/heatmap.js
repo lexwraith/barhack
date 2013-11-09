@@ -49,7 +49,7 @@ function initialize() {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', ('js/tweets'+ files + '.json'), true);
       files++;
-      if (files >=4){
+      if (files >=5){
         files = 0;
       }
       console.log(files);
